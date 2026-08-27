@@ -9,11 +9,11 @@ systems come online.
 
 | Component        | Host                          | Notes |
 |-------------------|-------------------------------|-------|
-| Synology NAS      | `nas.domain`               | Hosts Docker Registry, rsync backup target, Wikmd |
-| Docker Registry   | `nas.domain:5050` (LAN) → `registry.local.my-domain.com` | Private image registry, proxied via Traefik |
+| Synology NAS      | `longsnapper.gs`               | Hosts Docker Registry, rsync backup target, Wikmd |
+| Docker Registry   | `longsnapper.gs:5050` (LAN) → `registry.local.gs-playbook.com` | Private image registry, proxied via Traefik |
 | Reverse Proxy     | Traefik (separate node from NAS) | TLS termination, routing via file provider |
-| Backup Target     | `nas.domain`, rsync daemon | Module `backup` → `/volume1/homes/hometeam/backups/` |
-| Wiki              | `nas.domain` via Wikmd     | This wiki — Docker container, port 9454 |
+| Backup Target     | `longsnapper.gs`, rsync daemon | Module `backup` → `/volume1/homes/hometeam/backups/` |
+| Wiki              | `longsnapper.gs` via Wikmd     | This wiki — Docker container, port 9454 |
 | Node: holder      | **(fill in: IP/hostname)**       | Runs media/service stack, backed up via service-backup container |
 | Proxmox Cluster   | `Hometeam`                  | Multi-node virtualization cluster |
 | Router / Firewall | Ubiquiti UDM Pro            | Routing, VLANs, firewall policy, UniFi network management |
@@ -85,7 +85,7 @@ See [Proxmox Cluster](proxmox-cluster) for currently documented details.
 - Backups land on the NAS at
   `/volume1/homes/hometeam/backups/<node-name>/<service>/<timestamp>/`,
   as dated snapshots with hard-link-based retention (not flat mirrors).
-- Registry images: `registry.local.my-domain.com/<image>:latest`.
+- Registry images: `registry.local.gs-playbook.com/<image>:latest`.
 - Wiki pages: plain Markdown links to filename slugs, e.g.
   `[Display Text](page-slug)` — Wikmd does **not** use `[[wikilink]]` syntax.
 - DSM quirks to remember: `synoservicectl`/`synosystemctl` availability
