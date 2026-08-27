@@ -11,7 +11,7 @@ all homelab nodes without relying on Docker Hub.
 - **Storage:** `/volume1/homes/hometeam/registry` (bind-mounted directly,
   no volume driver needed since the registry runs on the NAS itself)
 - **Exposed on LAN:** `longsnapper.gs:5050` → proxied via [Traefik](traefik)
-  at `https://registry.local.gs-playbook.com`
+  at `https://registry.local.my-domain.com`
 - **Source:** private git repo `registry-infra` (GitHub)
 
 ## Architecture
@@ -52,7 +52,7 @@ specific router/service/middleware block:
 http:
   routers:
     registry:
-      rule: "Host(`registry.local.gs-playbook.com`)"
+      rule: "Host(`registry.local.my-domain.com`)"
       entrypoints:
         - websecure
       tls:
@@ -91,31 +91,31 @@ Copy the resulting file to the Traefik node at the path referenced in
 
 **Log in** (from any dev machine):
 ```bash
-docker login registry.local.gs-playbook.com
+docker login registry.local.my-domain.com
 ```
 
 **Build and push an image:**
 ```bash
-docker build -t registry.local.gs-playbook.com/<image-name>:latest .
-docker push registry.local.gs-playbook.com/<image-name>:latest
+docker build -t registry.local.my-domain.com/<image-name>:latest .
+docker push registry.local.my-domain.com/<image-name>:latest
 ```
 
 **Pull on a node:**
 ```bash
-docker login registry.local.gs-playbook.com
-docker pull registry.local.gs-playbook.com/<image-name>:latest
+docker login registry.local.my-domain.com
+docker pull registry.local.my-domain.com/<image-name>:latest
 ```
 
 **List tags for an image:**
 ```bash
-curl -u deploy:<password> https://registry.local.gs-playbook.com/v2/<image-name>/tags/list
+curl -u deploy:<password> https://registry.local.my-domain.com/v2/<image-name>/tags/list
 ```
 
 ## Verification / health check
 
 ```bash
 curl -I http://longsnapper.gs:5050/v2/           # direct, bypass Traefik — expect 200 OK
-curl -I https://registry.local.gs-playbook.com/v2/ # through Traefik — expect 401 Unauthorized (auth required, but reachable)
+curl -I https://registry.local.my-domain.com/v2/ # through Traefik — expect 401 Unauthorized (auth required, but reachable)
 ```
 
 ## Known gotchas

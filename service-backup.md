@@ -9,7 +9,7 @@ through environment variables — no code changes needed to add a node.
 
 - **Source code:** private git repo `service-backup` (GitHub)
 - **Built image:** `registry.local.gs-playbook.com/service-backup:latest`
-  (see [[Docker Registry]] for registry details)
+  (see [Docker Registry](docker-registry) for registry details)
 - **Deployed via:** Portainer stack, one per node
 - **Backup destination:** Synology NAS `longsnapper.gs`, rsync daemon
   module `backup` → `/volume1/homes/hometeam/backups/`
@@ -27,8 +27,8 @@ through environment variables — no code changes needed to add a node.
 - **Retention window** is controlled by `BACKUP_RETENTION_DAYS` — old
   snapshots beyond that window get pruned automatically.
 - Runs on a schedule inside the container via `supercronic` (chosen over
-  plain cron/dcron, which crashed under Synology's/Portainer's container
-  runtime due to a blocked `setpgid` syscall).
+  plain cron/dcron, which crashed under the container runtime here due
+  to a blocked `setpgid` syscall).
 
 ## Deploying to a new node
 
@@ -72,7 +72,7 @@ through environment variables — no code changes needed to add a node.
 | `REMOTE_TARGETS` | `rsync://user@host/module` — the rsync daemon target |
 | `RSYNC_PASSWORD` | Password matching the NAS's rsyncd secrets file (**not** the account's real DSM login password) |
 | `CRON_SCHEDULE` | Standard cron syntax, when the backup runs |
-| `RUN_ON_START` | If `true`, runs a backup immediately on container start (useful for first deploy/testing, set to `false` for steady-state) |
+| `RUN_ON_START` | If `true`, runs a backup immediately on container start (useful for first deploy/testing, `false` for steady-state) |
 
 ## NAS-side setup (one-time, already done for `longsnapper.gs`)
 
@@ -109,6 +109,10 @@ through environment variables — no code changes needed to add a node.
   docker build --no-cache -t <image> .  # bypass cache entirely
   docker images <image> --format '{{.ID}}'  # confirm digest actually changed
 ```
+- **Heredoc pastes over SSH can silently truncate/corrupt scripts** —
+  if a syntax error appears after editing via heredoc, verify with
+  `bash -n backup.sh` before rebuilding; prefer `scp`-ing a locally
+  edited file over pasting large heredocs through an SSH session.
 
 ## Manual on-demand run (debugging)
 

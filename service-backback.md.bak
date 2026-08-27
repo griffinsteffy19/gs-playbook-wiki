@@ -8,7 +8,7 @@ through environment variables — no code changes needed to add a node.
 ## Where it lives
 
 - **Source code:** private git repo `service-backup` (GitHub)
-- **Built image:** `registry.local.gs-playbook.com/service-backup:latest`
+- **Built image:** `registry.local.my-domain.com/service-backup:latest`
   (see [[Docker Registry]] for registry details)
 - **Deployed via:** Portainer stack, one per node
 - **Backup destination:** Synology NAS `longsnapper.gs`, rsync daemon
