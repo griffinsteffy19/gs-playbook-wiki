@@ -10,10 +10,10 @@ git_email: "griffinsteffy19@gmail.com"
 
 main_branch_name: "release"
 sync_with_remote: 1
-remote_url: "https://github.com/griffinsteffy19/gs-playbook-wiki.git"
+remote_url: "https://github.com/griffinsteffy19/my-domain-wiki.git"
 
 wiki_directory: "wiki"
-wiki_title: "GS-Playbook"
+wiki_title: "my-domain"
 homepage: "homepage.md"
 homepage_title: "homepage"
 images_route: "img"
